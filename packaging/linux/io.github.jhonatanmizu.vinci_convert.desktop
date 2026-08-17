@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Vinci Convert
+GenericName=Video Converter
+Comment=Convert videos to DaVinci Resolve compatible formats (ProRes)
+Exec=vinci-convert
+Icon=vinci-convert
+Categories=AudioVideo;Video;AudioVideoEditing;
+Keywords=video;converter;prores;davinci;ffmpeg;
+Terminal=false
+StartupNotify=true

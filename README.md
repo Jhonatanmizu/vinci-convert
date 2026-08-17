@@ -21,7 +21,30 @@ A Python reimagining of [davinconv](https://github.com/gohny/davinconv) by Gohny
 
 ## Install
 
-### 1. Install ffmpeg
+### Option 0 — Download a prebuilt package (no Python needed)
+
+Grab the latest release from [GitHub Releases](https://github.com/jhonatanmizu/vinci-convert/releases):
+
+| Platform | Package | Notes |
+|----------|---------|-------|
+| Linux    | `vinci-convert-*-x86_64.AppImage` | Portable — `chmod +x` and run |
+| Windows  | `vinci-convert-*-windows-x86_64-setup.exe` | Per-user installer, no admin needed |
+
+> **ffmpeg is still required** — the app calls `ffmpeg`/`ffprobe` from your `PATH`. See [Install ffmpeg](#1-install-ffmpeg) below.
+
+**Linux (AppImage):**
+
+```bash
+chmod +x vinci-convert-*-x86_64.AppImage
+./vinci-convert-*-x86_64.AppImage          # launches the GUI
+./vinci-convert-*-x86_64.AppImage cli --help   # runs the CLI
+```
+
+**Windows:** run the setup exe. It installs into `%LOCALAPPDATA%\Programs\Vinci Convert` (no UAC prompt), adds a Start Menu entry for the GUI, and a **"Vinci Convert CLI"** shortcut that opens a terminal with `vinci-convert` on `PATH`.
+
+### Build from source
+
+#### 1. Install ffmpeg
 
 ```bash
 # Fedora
@@ -34,13 +57,13 @@ sudo apt install ffmpeg
 sudo pacman -S ffmpeg
 ```
 
-### 2. Install uv (if you don't have it yet)
+#### 2. Install uv (if you don't have it yet)
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-### 3. Install vinci-convert
+#### 3. Install vinci-convert
 
 **Option A — run from source (recommended for development):**
 
@@ -138,12 +161,49 @@ The tool probes the source with `ffprobe` to detect the pixel format, then picks
 
 Audio is always encoded as `pcm_s16be` (uncompressed, Resolve-friendly).
 
+## Building the installers
+
+The prebuilt packages are produced by [`.github/workflows/release.yml`](.github/workflows/release.yml) on every `v*` tag (or manual dispatch). To build locally:
+
+**Linux (AppImage):**
+
+```bash
+uv sync                                                   # includes PyInstaller (dev group)
+uv run pyinstaller packaging/vinci-convert.spec --noconfirm
+uv run pyinstaller packaging/vinci-convert-gui.spec --noconfirm
+packaging/linux/build-appimage.sh                         # → dist/vinci-convert-<version>-x86_64.AppImage
+```
+
+**Windows (Inno Setup):** on a Windows machine with [Inno Setup 6](https://jrsoftware.org/isinfo.php) installed:
+
+```powershell
+uv sync
+uv run pyinstaller packaging/vinci-convert.spec --noconfirm
+uv run pyinstaller packaging/vinci-convert-gui.spec --noconfirm
+& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" packaging\windows\installer.iss
+# → dist\installer\vinci-convert-<version>-windows-x86_64-setup.exe
+```
+
+To regenerate the app icons: `QT_QPA_PLATFORM=offscreen uv run python packaging/generate_icons.py`
+
 ## Project structure
 
 ```
 vinci-convert/
 ├── pyproject.toml
 ├── README.md
+├── .github/workflows/
+│   └── release.yml      # CI: builds AppImage + Windows installer, publishes releases
+├── packaging/
+│   ├── cli_launcher.py  # PyInstaller entry scripts
+│   ├── gui_launcher.py
+│   ├── vinci-convert.spec       # PyInstaller spec (CLI)
+│   ├── vinci-convert-gui.spec   # PyInstaller spec (GUI)
+│   ├── generate_icons.py        # icon generator (QPainter, Catppuccin)
+│   ├── assets/          # generated vinci-convert.png / .ico
+│   ├── linux/           # AppRun, .desktop, AppStream metadata, AppImage script
+│   └── windows/
+│       └── installer.iss        # Inno Setup installer
 └── src/vinci_convert/
     ├── __init__.py
     ├── __main__.py      # python -m vinci_convert

@@ -16,6 +16,11 @@ dependencies = [
 vinci-convert = "vinci_convert.cli:app"
 vinci-convert-gui = "vinci_convert.gui:main"
 
+[dependency-groups]
+dev = [
+    "pyinstaller>=6.10",
+]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

@@ -1,0 +1,14 @@
+#!/bin/sh
+# AppImage entry point for vinci-convert.
+#
+#   ./vinci-convert-*.AppImage            launches the desktop GUI
+#   ./vinci-convert-*.AppImage cli ...    runs the CLI (all args forwarded)
+
+HERE="$(dirname "$(readlink -f "$0")")"
+
+if [ "$1" = "cli" ]; then
+    shift
+    exec "$HERE/usr/bin/vinci-convert/vinci-convert" "$@"
+fi
+
+exec "$HERE/usr/bin/vinci-convert-gui/vinci-convert-gui" "$@"

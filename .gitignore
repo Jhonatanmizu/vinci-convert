@@ -29,6 +29,12 @@ MANIFEST
 # PyInstaller
 *.manifest
 *.spec
+!packaging/*.spec
+
+# PyInstaller build artifacts
+pyinstaller-build/
+*.AppImage
+appimagetool*
 
 # Installer logs
 pip-log.txt

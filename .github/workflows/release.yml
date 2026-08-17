@@ -1,0 +1,124 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  # ── Linux: PyInstaller → AppImage ────────────────────────────────
+  linux:
+    name: Linux (AppImage)
+    # Build on the oldest supported Ubuntu for broader glibc compatibility.
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Resolve version
+        id: version
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            V="${GITHUB_REF_NAME#v}"
+          else
+            V="$(grep -m1 '^version' pyproject.toml | cut -d'\"' -f2)"
+          fi
+          echo "value=$V" >> "$GITHUB_OUTPUT"
+          echo "Building version $V"
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Build executables (PyInstaller)
+        run: |
+          uv run pyinstaller packaging/vinci-convert.spec --noconfirm --distpath dist --workpath pyinstaller-build
+          uv run pyinstaller packaging/vinci-convert-gui.spec --noconfirm --distpath dist --workpath pyinstaller-build
+
+      - name: Build AppImage
+        run: packaging/linux/build-appimage.sh "${{ steps.version.outputs.value }}"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-x86_64
+          path: dist/*.AppImage
+          if-no-files-found: error
+
+  # ── Windows: PyInstaller → Inno Setup ────────────────────────────
+  windows:
+    name: Windows (Inno Setup)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Resolve version
+        id: version
+        shell: pwsh
+        run: |
+          if ($env:GITHUB_REF -like 'refs/tags/v*') {
+            $v = $env:GITHUB_REF_NAME.TrimStart('v')
+          } else {
+            $v = (Select-String -Path pyproject.toml -Pattern '^version\s*=').Line -replace '.*"([^"]+)".*', '$1'
+          }
+          "value=$v" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "Building version $v"
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Build executables (PyInstaller)
+        run: |
+          uv run pyinstaller packaging/vinci-convert.spec --noconfirm --distpath dist --workpath pyinstaller-build
+          uv run pyinstaller packaging/vinci-convert-gui.spec --noconfirm --distpath dist --workpath pyinstaller-build
+
+      - name: Install Inno Setup
+        run: choco install innosetup --yes --no-progress
+
+      - name: Build installer
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "/DAppVersion=${{ steps.version.outputs.value }}" packaging\windows\installer.iss
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-x86_64
+          path: dist/installer/*.exe
+          if-no-files-found: error
+
+  # ── Publish a GitHub Release (tag builds only) ───────────────────
+  release:
+    name: Publish release
+    needs: [linux, windows]
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Generate checksums
+        working-directory: artifacts
+        run: |
+          find . -type f \( -name '*.AppImage' -o -name '*.exe' \) -print0 \
+            | xargs -0 sha256sum > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            artifacts/**/*.AppImage
+            artifacts/**/*.exe
+            artifacts/SHA256SUMS.txt

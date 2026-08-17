@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.jhonatanmizu.vinci_convert</id>
+  <name>Vinci Convert</name>
+  <summary>Convert videos to DaVinci Resolve compatible formats (ProRes)</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-only</project_license>
+  <description>
+    <p>
+      Vinci Convert transcodes videos into DaVinci Resolve friendly ProRes
+      files using ffmpeg. It auto-detects the pixel format and picks the
+      right ProRes profile (HQ, 4444 with alpha, or stream copy), and can
+      export finished edits back to H264 for delivery.
+    </p>
+    <p>Features:</p>
+    <ul>
+      <li>Convert single files or whole directories (recursive) to ProRes</li>
+      <li>Automatic pixel-format detection (422 HQ / 4444 alpha / copy)</li>
+      <li>Export back to H264</li>
+      <li>Catppuccin Mocha themed desktop app and terminal UI</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">io.github.jhonatanmizu.vinci_convert.desktop</launchable>
+  <url type="homepage">https://github.com/jhonatanmizu/vinci-convert</url>
+  <url type="bugtracker">https://github.com/jhonatanmizu/vinci-convert/issues</url>
+  <developer id="io.github.jhonatanmizu">
+    <name>jhonatanmizu</name>
+  </developer>
+  <provides>
+    <binary>vinci-convert</binary>
+    <binary>vinci-convert-gui</binary>
+  </provides>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="0.1.0" date="2026-08-17"/>
+  </releases>
+</component>
