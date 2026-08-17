@@ -27,7 +27,7 @@ jobs:
           if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
             V="${GITHUB_REF_NAME#v}"
           else
-            V="$(grep -m1 '^version' pyproject.toml | cut -d'\"' -f2)"
+            V="$(grep -m1 '^version' pyproject.toml | cut -d'"' -f2)"
           fi
           echo "value=$V" >> "$GITHUB_OUTPUT"
           echo "Building version $V"
