@@ -25,6 +25,15 @@ def _time_to_seconds(t: str) -> float:
     return int(h) * 3600 + int(m) * 60 + float(s)
 
 
+def _parse_out_time_us(line: str) -> float | None:
+    """Return seconds from an ffmpeg 'out_time_us=...' line, or None if N/A."""
+    value = line.split("=", 1)[1]
+    try:
+        return int(value) / 1_000_000.0
+    except ValueError:
+        return None
+
+
 class ConvertWorker(QObject):
     """Convert a list of files to ProRes, emitting progress signals."""
 
@@ -132,7 +141,9 @@ class ConvertWorker(QObject):
             if not line:
                 continue
             if line.startswith("out_time_us="):
-                current = int(line.split("=", 1)[1]) / 1_000_000.0
+                current = _parse_out_time_us(line)
+                if current is None:
+                    continue
                 d = dur["v"]
                 if d > 0:
                     pct = int(min(current / d * 100, 100))
@@ -231,7 +242,9 @@ class ExportWorker(QObject):
             if not line:
                 continue
             if line.startswith("out_time_us="):
-                current = int(line.split("=", 1)[1]) / 1_000_000.0
+                current = _parse_out_time_us(line)
+                if current is None:
+                    continue
                 d = dur["v"]
                 if d > 0:
                     pct = int(min(current / d * 100, 100))
