@@ -23,4 +23,4 @@
 - [x] 4.2 Helper sanity check: run `subprocess_env()` under a simulated frozen context (set `sys.frozen`/`sys._MEIPASS` and `LD_LIBRARY_PATH` in a throwaway `python -c`) and assert bundle paths are stripped / `_ORIG` restored
 - [x] 4.3 Rebuild PyInstaller binaries + AppImage locally (`pyinstaller` specs, then `packaging/linux/build-appimage.sh`)
 - [x] 4.4 AppImage end-to-end: `… cli convert <the file that failed>` succeeds, and a conversion via the AppImage GUI succeeds — reproducing the original report before marking done
-- [ ] 4.5 Push a `v*` tag (or `workflow_dispatch`) and confirm the CI Linux job's AppImage artifact converts a file on a clean machine/VM
+- [x] 4.5 Push a `v*` tag (or `workflow_dispatch`) and confirm the CI Linux job's AppImage artifact converts a file on a clean machine/VM
