@@ -12,7 +12,9 @@ from PySide6.QtCore import QObject, QThread, Signal
 from .converter import (
     build_convert_cmd,
     build_export_cmd,
+    format_spawn_error,
     probe,
+    subprocess_env,
 )
 
 _TIME_RE = re.compile(r"time=(\d+:\d+:\d+\.\d+)")
@@ -64,8 +66,9 @@ class ConvertWorker(QObject):
                 try:
                     probe_res = probe(src)
                 except Exception as exc:
-                    msg = getattr(exc, "stderr", None) or str(exc)
-                    self.error.emit(f"ffprobe failed on {src.name}: {msg}")
+                    self.error.emit(
+                        f"ffprobe failed on {src.name}: {format_spawn_error(exc)}"
+                    )
                     self.file_done.emit(src.name, False)
                     continue
 
@@ -116,6 +119,7 @@ class ConvertWorker(QObject):
             stderr=subprocess.PIPE,
             text=True,
             universal_newlines=True,
+            env=subprocess_env(),
         )
         assert proc.stdout is not None
         assert proc.stderr is not None
@@ -219,6 +223,7 @@ class ExportWorker(QObject):
             stderr=subprocess.PIPE,
             text=True,
             universal_newlines=True,
+            env=subprocess_env(),
         )
         assert proc.stdout is not None
         assert proc.stderr is not None

@@ -7,8 +7,10 @@ Two operations:
 
 from __future__ import annotations
 
+import os
 import shutil
 import subprocess
+import sys
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
@@ -54,6 +56,55 @@ def ensure_dirs(base: Path) -> tuple[Path, Path]:
     return converted, exported
 
 
+def subprocess_env() -> dict:
+    """Return a copy of the environment for spawning external tools.
+
+    When running frozen (PyInstaller), ``LD_LIBRARY_PATH`` is sanitized
+    so the child process loads system libraries instead of bundled ones.
+    """
+    env = os.environ.copy()
+    if not getattr(sys, "frozen", False):
+        return env
+
+    # Frozen (PyInstaller/AppImage/Windows installer)
+    orig = env.get("LD_LIBRARY_PATH_ORIG")
+    if orig is not None:
+        env["LD_LIBRARY_PATH"] = orig
+        env.pop("LD_LIBRARY_PATH_ORIG", None)
+        return env
+
+    current = env.get("LD_LIBRARY_PATH", "")
+    if current:
+        exe_dir = Path(sys.executable).parent
+        meipass = getattr(sys, "_MEIPASS", None)
+        keep: list[str] = []
+        for entry in current.split(":"):
+            p = Path(entry)
+            if p == exe_dir or (meipass and p.is_relative_to(meipass)):
+                continue
+            keep.append(entry)
+        if keep:
+            env["LD_LIBRARY_PATH"] = ":".join(keep)
+        else:
+            env.pop("LD_LIBRARY_PATH", None)
+    return env
+
+
+def format_spawn_error(exc: Exception) -> str:
+    """Format a subprocess or spawn error for user-facing display."""
+    if isinstance(exc, FileNotFoundError):
+        return "ffmpeg/ffprobe not found on PATH — please install ffmpeg."
+    if isinstance(exc, subprocess.CalledProcessError):
+        parts = [f"exit status {exc.returncode}"]
+        stderr = getattr(exc, "stderr", None)
+        if stderr:
+            parts.append(stderr.rstrip())
+        if parts:
+            return " — ".join(parts)
+        return str(exc)
+    return str(exc)
+
+
 def is_video(path: Path) -> bool:
     return path.suffix.lower() in VIDEO_EXTENSIONS and path.is_file()
 
@@ -88,6 +139,7 @@ def probe(path: Path) -> ProbeResult:
         capture_output=True,
         text=True,
         check=True,
+        env=subprocess_env(),
     )
     pix_fmt = result.stdout.strip()
 
@@ -183,4 +235,5 @@ def run_ffmpeg(cmd: list[str]) -> subprocess.Popen:
         stdout=subprocess.DEVNULL,
         text=True,
         universal_newlines=True,
+        env=subprocess_env(),
     )

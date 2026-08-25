@@ -28,6 +28,7 @@ from .converter import (
     ConversionType,
     build_convert_cmd,
     build_export_cmd,
+    format_spawn_error,
     probe,
     run_ffmpeg,
 )
@@ -91,7 +92,13 @@ def convert_with_progress(
     mode: str,
 ) -> bool:
     """Convert a single file with a live progress bar. Returns True on success."""
-    probe_res = probe(src)
+    try:
+        probe_res = probe(src)
+    except Exception as exc:
+        theme.console.print(
+            f"[status.error]✕[/] Failed to probe {src.name}: {format_spawn_error(exc)}"
+        )
+        return False
     cmd = build_convert_cmd(src, dst, probe_res)
     info_panel = _render_info_panel(src, dst, probe_res, mode)
 
