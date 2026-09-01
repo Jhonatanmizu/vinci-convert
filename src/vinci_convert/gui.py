@@ -16,8 +16,8 @@ from __future__ import annotations
 import time
 from pathlib import Path
 
-from PySide6.QtCore import Qt, QThread, QTimer
-from PySide6.QtGui import QCloseEvent
+from PySide6.QtCore import Qt, QThread, QTimer, QUrl
+from PySide6.QtGui import QCloseEvent, QDesktopServices
 from PySide6.QtWidgets import (
     QApplication,
     QFileDialog,
@@ -41,6 +41,7 @@ from .converter import (
     ensure_dirs,
     ffmpeg_available,
 )
+from .donate import PIX_KEY, SPONSORS_URL, has_pix
 from .workers import ConvertWorker, ExportWorker
 
 APP_NAME = "Vinci Convert"
@@ -98,6 +99,7 @@ class MainWindow(QMainWindow):
         body_layout.addWidget(self._build_progress_section(), 0)
         body_layout.addLayout(self._build_button_row(), 0)
         body_layout.addWidget(self._build_log_panel(), 1)
+        body_layout.addWidget(self._build_support_bar())
 
     def _build_title_bar(self) -> QFrame:
         bar = QFrame()
@@ -285,6 +287,24 @@ class MainWindow(QMainWindow):
         self.log_panel.setMaximumBlockCount(2000)
         return self.log_panel
 
+    def _build_support_bar(self) -> QFrame:
+        bar = QFrame()
+        bar.setObjectName("SupportBar")
+        h = QHBoxLayout(bar)
+        h.setContentsMargins(0, 10, 0, 0)
+        h.setSpacing(12)
+
+        tip = QLabel("♥ vinci-convert is free — keep it alive")
+        tip.setObjectName("SupportTip")
+
+        self.btn_support = QPushButton("Support the project")
+        self.btn_support.setObjectName("SupportBtn")
+        self.btn_support.setCursor(Qt.CursorShape.PointingHandCursor)
+
+        h.addWidget(tip, 1)
+        h.addWidget(self.btn_support, 0)
+        return bar
+
     # ── Signals ───────────────────────────────────────────────────
 
     def _connect_signals(self) -> None:
@@ -295,6 +315,7 @@ class MainWindow(QMainWindow):
         self.btn_export.clicked.connect(self._on_export)
         self.btn_clean.clicked.connect(self._on_clean)
         self.btn_quit.clicked.connect(self.close)
+        self.btn_support.clicked.connect(self._open_support)
         self.path_input.textChanged.connect(self._update_info_panel)
 
     # ── Mode / browse / info ──────────────────────────────────────
@@ -534,6 +555,35 @@ class MainWindow(QMainWindow):
             f.unlink()
         self._log(f"✓ Cleaned {self._converted_dir}")
         self._update_info_panel()
+
+    def _open_support(self) -> None:
+        box = QMessageBox(self)
+        box.setWindowTitle("Support Vinci Convert")
+        text = (
+            "Vinci Convert is free and open source under GPL-3.0.\n"
+            "If it saves you time, a small donation keeps it shipping:\n\n"
+            f"GitHub Sponsors: {SPONSORS_URL}"
+        )
+        if has_pix():
+            text += f"\nPIX (BRL): {PIX_KEY}"
+        box.setText(text)
+
+        sponsors_btn = box.addButton(
+            "Open GitHub Sponsors", QMessageBox.ButtonRole.AcceptRole
+        )
+        pix_btn = None
+        if has_pix():
+            pix_btn = box.addButton(
+                "Copy PIX key", QMessageBox.ButtonRole.ActionRole
+            )
+        box.addButton("Close", QMessageBox.ButtonRole.RejectRole)
+        box.exec()
+
+        clicked = box.clickedButton()
+        if clicked is sponsors_btn:
+            QDesktopServices.openUrl(QUrl(SPONSORS_URL))
+        elif pix_btn is not None and clicked is pix_btn:
+            QApplication.clipboard().setText(PIX_KEY)
 
     # ── State ─────────────────────────────────────────────────────
 

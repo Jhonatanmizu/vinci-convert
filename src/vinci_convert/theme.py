@@ -54,6 +54,9 @@ THEME = Theme(
         "btn.primary": f"bold {TEXT} on {MAUVE}",
         "btn.secondary": f"{TEXT} on {SURFACE0}",
         "btn.danger": f"{RED} on {SURFACE0}",
+        "donate.title": f"bold {LAVENDER}",
+        "donate.link": f"{TEAL}",
+        "donate.dim": f"{OVERLAY0}",
         "dim": f"{OVERLAY0}",
     }
 )
