@@ -1,0 +1,98 @@
+---
+const REPO_URL = "https://github.com/jhonatanmizu/vinci-convert";
+const RELEASES_URL = `${REPO_URL}/releases`;
+---
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#top">
+      <img src="/vinci-convert/icon.png" alt="" width="26" height="26" />
+      <span class="brand-name">vinci-convert</span>
+    </a>
+
+    <nav class="links">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#docs">Docs</a>
+    </nav>
+
+    <div class="actions">
+      <span class="lang" title="Interface em português e inglês">PT · EN</span>
+      <a class="btn btn-primary btn-sm" href={RELEASES_URL}>Download</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--base) 82%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--surface0);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    height: 68px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .brand:hover {
+    text-decoration: none;
+  }
+
+  .brand-name::before {
+    content: "❯ ";
+    color: var(--mauve);
+  }
+
+  .links {
+    display: flex;
+    gap: 24px;
+    margin-left: 12px;
+  }
+
+  .links a {
+    color: var(--subtext0);
+    font-size: 14px;
+  }
+
+  .links a:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .lang {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--lavender);
+    border: 1px solid var(--surface1);
+    border-radius: 900px;
+    padding: 6px 12px;
+  }
+
+  @media (max-width: 720px) {
+    .links {
+      display: none;
+    }
+  }
+</style>

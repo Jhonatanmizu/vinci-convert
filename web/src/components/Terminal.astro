@@ -1,0 +1,139 @@
+---
+/**
+ * Terminal window shell — mirrors the Catppuccin TUI look.
+ * lines: [{ prompt?, label?, text?, kind?, bar?, pct? }]
+ *   kind: "dim" | "accent" | "success" | "error" | "bar"
+ */
+const { title = "vinci-convert", lines = [] } = Astro.props;
+---
+
+<figure class="terminal">
+  <div class="tbar">
+    <span class="dot d-red"></span>
+    <span class="dot d-yellow"></span>
+    <span class="dot d-green"></span>
+    <span class="tbar-title">{title}</span>
+  </div>
+  <div class="tbody">
+    {lines.map((line, i) =>
+      line.bar ? (
+        <div class="tline" key={i}>
+          {line.prompt && <span class="tprompt">{line.prompt}</span>}
+          <span class="bar">
+            <span
+              class="bar-fill"
+              style={`width:${line.pct}%`}
+            ></span>
+          </span>
+          {line.text && <span class="ttext">{line.text}</span>}
+        </div>
+      ) : (
+        <div
+          class:list={["tline", line.kind ? `t-${line.kind}` : ""]}
+          key={i}
+        >
+          {line.label && <span class="tlabel">{line.label}</span>}
+          {line.text && <span class="ttext">{line.text}</span>}
+        </div>
+      )
+    )}
+  </div>
+</figure>
+
+<style>
+  .terminal {
+    margin: 0;
+    border-radius: 12px;
+    border: 1px solid var(--surface0);
+    overflow: hidden;
+    background: var(--crust);
+    box-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.7);
+  }
+
+  .tbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 16px;
+    background: var(--mantle);
+    border-bottom: 1px solid var(--surface0);
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  .d-red {
+    background: var(--red);
+  }
+  .d-yellow {
+    background: var(--yellow);
+  }
+  .d-green {
+    background: var(--green);
+  }
+
+  .tbar-title {
+    margin-left: 8px;
+    font-size: 12px;
+    color: var(--subtext0);
+  }
+
+  .tbody {
+    padding: 18px 20px 20px;
+    font-size: 13px;
+    line-height: 1.75;
+    overflow-x: auto;
+  }
+
+  .tline {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    white-space: nowrap;
+    gap: 6px;
+  }
+
+  .tlabel {
+    color: var(--mauve);
+  }
+  .tprompt {
+    color: var(--overlay0);
+  }
+
+  .ttext {
+    color: var(--text);
+  }
+
+  .t-dim .ttext {
+    color: var(--overlay0);
+  }
+  .t-accent .ttext {
+    color: var(--mauve);
+    font-weight: 600;
+  }
+  .t-success .ttext {
+    color: var(--green);
+    font-weight: 600;
+  }
+  .t-error .ttext {
+    color: var(--red);
+  }
+
+  .bar {
+    flex: 0 0 140px;
+    height: 10px;
+    border-radius: 5px;
+    background: var(--surface0);
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    display: block;
+    height: 100%;
+    border-radius: 5px;
+    background: linear-gradient(90deg, var(--mauve), var(--lavender));
+    transition: width 0.3s ease;
+  }
+</style>

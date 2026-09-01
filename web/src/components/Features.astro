@@ -1,0 +1,119 @@
+---
+const features = [
+  {
+    icon: "✦",
+    color: "var(--mauve)",
+    title: "Auto pixel detection",
+    text: "ffprobe reads the source and picks ProRes HQ (422) for standard footage or ProRes 4444 for alpha — and stream-copies untouched when remuxing is safest.",
+  },
+  {
+    icon: "▣",
+    color: "var(--blue)",
+    title: "Batch & recursive",
+    text: "Point at a folder and it walks every subdirectory, queues all the clips, and converts them in one go.",
+  },
+  {
+    icon: "◆",
+    color: "var(--teal)",
+    title: "Resolve-ready",
+    text: "Uncompressed pcm_s16be audio, 422/4444 sampling, quicktime wrappers — the exact combinations DaVinci expects.",
+  },
+  {
+    icon: "⤵",
+    color: "var(--peach)",
+    title: "H264 delivery export",
+    text: "Done cutting? Export your ProRes masters back to H264 with one command, ready for client delivery.",
+  },
+  {
+    icon: "⌘",
+    color: "var(--green)",
+    title: "Two interfaces, one engine",
+    text: "A rich rich/typer terminal TUI and a PySide6 desktop window share the same conversion engine.",
+  },
+  {
+    icon: "♥",
+    color: "var(--red)",
+    title: "Open & private",
+    text: "GPL-3.0, no telemetry, no account, no cloud. It runs fully offline on ffmpeg already on your machine.",
+  },
+];
+---
+
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">// features</div>
+      <h2 class="section-title">Built for editors, not for servers.</h2>
+      <p class="section-sub">
+        One binary, two surfaces, zero accounts. Probe, convert, cut,
+        deliver — all on your own machine.
+      </p>
+    </div>
+
+    <div class="grid">
+      {features.map((f) => (
+        <article class="card">
+          <span class="icon" style={`--c:${f.color}`}>{f.icon}</span>
+          <h3>{f.title}</h3>
+          <p>{f.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--mantle);
+    border: 1px solid var(--surface0);
+    border-radius: var(--radius);
+    padding: 28px;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+
+  .card:hover {
+    border-color: var(--surface1);
+    transform: translateY(-2px);
+  }
+
+  .icon {
+    display: inline-grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--c) 12%, var(--mantle));
+    color: var(--c);
+    font-size: 20px;
+    margin-bottom: 18px;
+  }
+
+  h3 {
+    font-size: 17px;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .card p {
+    font-size: 14px;
+    color: var(--subtext0);
+  }
+
+  @media (max-width: 940px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 620px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

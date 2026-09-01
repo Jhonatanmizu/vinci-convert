@@ -1,0 +1,53 @@
+---
+const stats = [
+  { value: "HQ · 4444 · copy", label: "ProRes profiles auto-selected" },
+  { value: "2", label: "interfaces — terminal TUI + desktop GUI" },
+  { value: "0", label: "bytes sent to the cloud. Ever." },
+  { value: "GPL-3.0", label: "licensed, open, forever free" },
+];
+---
+
+<section class="stats">
+  <div class="container grid">
+    {stats.map((s) => (
+      <div class="stat">
+        <div class="value">{s.value}</div>
+        <div class="label">{s.label}</div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .stats {
+    background: var(--mantle);
+    border-top: 1px solid var(--surface0);
+    border-bottom: 1px solid var(--surface0);
+    padding: 48px 0;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
+
+  .value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--mauve);
+  }
+
+  .label {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--subtext0);
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+  }
+</style>

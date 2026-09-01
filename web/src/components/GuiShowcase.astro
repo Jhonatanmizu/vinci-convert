@@ -1,0 +1,268 @@
+---
+const infoRows = [
+  ["Input", "clip_2026-09-01.mov"],
+  ["Output", "~/Videos/vinci-convert/converted"],
+  ["Codec", "prores_ks · profile 3 (HQ)"],
+  ["Pixel Format", "yuv422p10le"],
+  ["Audio", "pcm_s16be"],
+];
+
+const logLines = [
+  "✓ scanned: 3 files in ./clips",
+  "› scene_01.mp4 → ProRes HQ (422)",
+  "✓ converted in 0:00:04",
+  "› batch complete: 4/4",
+  "♥ Apoie o projeto · Support the project",
+];
+---
+
+<section class="section" id="gui">
+  <div class="container">
+    <div class="section-head section-head--center">
+      <div class="eyebrow">// the gui</div>
+      <h2 class="section-title">Same engine, desktop window.</h2>
+      <p class="section-sub">
+        Don&apos;t trust a terminal? The PySide6 app exposes the whole
+        tool — probe info, progress, and logs — in Catppuccin.
+      </p>
+    </div>
+
+    <div class="window">
+      <div class="win-bar">
+        <span class="dot d-red"></span>
+        <span class="dot d-yellow"></span>
+        <span class="dot d-green"></span>
+        <span class="win-title">vinci-convert — DaVinci Resolve Converter</span>
+      </div>
+
+      <div class="win-body">
+        <div class="win-left">
+          <div class="modes">
+            <button class="mode mode-on" disabled>Single File</button>
+            <button class="mode" disabled>Directory</button>
+          </div>
+
+          <div class="path-row">
+            <div class="path-input">./clips/</div>
+            <button class="browse" disabled>Browse</button>
+          </div>
+
+          <div class="info">
+            {infoRows.map(([k, v]) => (
+              <div class="info-row">
+                <span class="ik">{k}</span>
+                <span class="iv">{v}</span>
+              </div>
+            ))}
+          </div>
+
+          <div class="progress">
+            <div class="bar">
+              <div class="bar-fill" style="width: 72%"></div>
+            </div>
+            <div class="pmeta">scene_02.mov · 72% · ETA 0:00:08 · 214 MB</div>
+          </div>
+
+          <div class="buttons">
+            <button class="b b-primary" disabled>Convert</button>
+            <button class="b" disabled>Export H264</button>
+            <button class="b" disabled>Clean</button>
+            <button class="b" disabled>Quit</button>
+          </div>
+        </div>
+
+        <div class="win-right">
+          <div class="log-title">log</div>
+          {logLines.map((l) => (
+            <div class="log-line">{l}</div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .window {
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: 14px;
+    border: 1px solid var(--surface0);
+    overflow: hidden;
+    background: var(--crust);
+    box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.7);
+  }
+
+  .win-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 16px;
+    background: var(--mantle);
+    border-bottom: 1px solid var(--surface0);
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  .d-red {
+    background: var(--red);
+  }
+  .d-yellow {
+    background: var(--yellow);
+  }
+  .d-green {
+    background: var(--green);
+  }
+
+  .win-title {
+    margin-left: 8px;
+    font-size: 12px;
+    color: var(--subtext0);
+  }
+
+  .win-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    padding: 24px;
+  }
+
+  .modes {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .mode,
+  .browse,
+  .b {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    border: 1px solid var(--surface1);
+    background: var(--mantle);
+    color: var(--subtext0);
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: not-allowed;
+  }
+
+  .mode-on {
+    background: var(--surface1);
+    color: var(--lavender);
+    border-color: var(--surface2);
+    font-weight: 600;
+  }
+
+  .path-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .path-input {
+    flex: 1;
+    background: var(--base);
+    border: 1px solid var(--surface0);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--text);
+    font-size: 12.5px;
+  }
+
+  .info {
+    border: 1px solid var(--surface0);
+    border-radius: 10px;
+    padding: 6px 14px;
+    margin-bottom: 16px;
+    background: var(--base);
+  }
+
+  .info-row {
+    display: flex;
+    gap: 12px;
+    font-size: 12.5px;
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--surface0);
+  }
+  .info-row:last-child {
+    border-bottom: none;
+  }
+
+  .ik {
+    color: var(--overlay0);
+    flex: 0 0 110px;
+  }
+  .iv {
+    color: var(--subtext1);
+  }
+
+  .progress {
+    margin-bottom: 18px;
+  }
+
+  .bar {
+    height: 12px;
+    border-radius: 6px;
+    background: var(--surface0);
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    width: 72%;
+    background: linear-gradient(90deg, var(--mauve), var(--lavender));
+    border-radius: 6px;
+  }
+
+  .pmeta {
+    margin-top: 8px;
+    font-size: 11.5px;
+    color: var(--overlay0);
+  }
+
+  .buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .b-primary {
+    background: var(--mauve);
+    color: var(--base);
+    border-color: var(--mauve);
+    font-weight: 600;
+  }
+
+  .win-right {
+    background: var(--base);
+    border: 1px solid var(--surface0);
+    border-radius: 10px;
+    padding: 14px;
+    min-height: 320px;
+  }
+
+  .log-title {
+    font-size: 11px;
+    color: var(--overlay0);
+    margin-bottom: 10px;
+  }
+
+  .log-line {
+    font-size: 12.5px;
+    color: var(--subtext1);
+    padding: 5px 0;
+    border-bottom: 1px dashed var(--surface0);
+  }
+  .log-line:last-child {
+    border-bottom: none;
+  }
+
+  @media (max-width: 760px) {
+    .win-body {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

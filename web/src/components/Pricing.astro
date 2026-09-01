@@ -1,0 +1,273 @@
+---
+const REPO_URL = "https://github.com/jhonatanmizu/vinci-convert";
+const SPONSORS_URL = "https://github.com/sponsors/jhonatanmizu";
+const ISSUES_URL = `${REPO_URL}/issues/new`;
+
+const tiers = [
+  {
+    name: "Free / OSS",
+    price: "R$ 0",
+    priceSub: "aberto para sempre · $0 forever",
+    items: [
+      "CLI + GUI completos · Full CLI + desktop GUI",
+      "Conversão simples e em lote · Single & batch convert",
+      "ProRes HQ · 4444 · stream copy",
+      "Re-exporte para H264 · Back to H264",
+    ],
+    cta: "Apoie no GitHub · Sponsor",
+    href: REPO_URL,
+    primary: false,
+  },
+  {
+    name: "Supporter",
+    badge: "PIX + Sponsors",
+    price: "R$ 9,90",
+    priceSub: "/mês · ou R$ 49 vitalício · $4/mo · $19 once",
+    items: [
+      "AppImage + .exe prontos · Prebuilt installers",
+      "Canal auto-update + builds novos · Auto-update & early builds",
+      "Issues com prioridade · Priority support",
+      "Badge de apoiador no app · Supporter badge",
+    ],
+    cta: "Vire Apoiador · Supporter",
+    href: SPONSORS_URL,
+    primary: true,
+    pix: true,
+  },
+  {
+    name: "Studio",
+    price: "R$ 149",
+    priceSub: "/mês por estação · min. 5 · $49/mo seat",
+    items: [
+      "Watch-folders como serviço (Drive/NAS)",
+      "Fila de jobs do time · Team job queue",
+      "Relatórios de probe p/ cliente · Client-facing reports",
+      "SLA + onboarding",
+    ],
+    cta: "Fale Conosco · Talk to us",
+    href: ISSUES_URL,
+    primary: false,
+  },
+];
+---
+
+<section class="section" id="pricing">
+  <div class="container">
+    <div class="section-head section-head--center">
+      <div class="eyebrow">// preços · pricing</div>
+      <h2 class="section-title">Free for editors. Fair for studios.</h2>
+      <p class="section-sub">
+        Open source, so it always works offline. Pay only when the tool
+        pays for itself.
+      </p>
+    </div>
+
+    <div class="tiers">
+      {tiers.map((t) => (
+        <article class:list={["tier", t.primary && "tier--primary"]}>
+          <div class="head">
+            <span class="t-name">{t.name}</span>
+            {t.badge && <span class="badge">{t.badge}</span>}
+          </div>
+
+          <div class="price">{t.price}</div>
+          <div class="price-sub">{t.priceSub}</div>
+          <div class="divider"></div>
+
+          <ul>
+            {t.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+
+          {t.pix && (
+            <div class="pix-row">
+              <div class="qr" aria-hidden="true">
+                <span class="qr-corner"></span>
+                <span class="qr-corner"></span>
+                <span class="qr-corner"></span>
+                <span class="qr-corner"></span>
+                <span class="qr-mid">PIX</span>
+              </div>
+              <div class="pix-text">
+                PIX · Copia-e-Colá
+                <br />
+                instante, sem taxas · instant, no fees
+              </div>
+            </div>
+          )}
+
+          <a
+            class:list={["btn btn-pricing", !t.primary && "btn-outline"]}
+            href={t.href}
+          >
+            {t.cta}
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  .tier {
+    display: flex;
+    flex-direction: column;
+    background: var(--mantle);
+    border: 1px solid var(--surface0);
+    border-radius: var(--radius);
+    padding: 30px;
+  }
+
+  .tier--primary {
+    border: 2px solid var(--mauve);
+    box-shadow: 0 0 0 1px var(--mauve), 0 24px 60px -34px rgba(203, 166, 247, 0.35);
+  }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .t-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--base);
+    background: var(--mauve);
+    border-radius: 12px;
+    padding: 5px 11px;
+  }
+
+  .price {
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--mauve);
+    letter-spacing: -0.02em;
+  }
+
+  .price-sub {
+    font-size: 12.5px;
+    color: var(--subtext0);
+    margin-bottom: 16px;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--surface0);
+    margin-bottom: 18px;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0 0 22px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+
+  li {
+    font-size: 13.5px;
+    color: var(--subtext0);
+    line-height: 1.5;
+  }
+
+  li::before {
+    content: "✓";
+    margin-right: 10px;
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  .pix-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--crust);
+    border: 1px solid var(--surface0);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 22px;
+  }
+
+  .qr {
+    position: relative;
+    flex: 0 0 56px;
+    height: 56px;
+    background: var(--crust);
+    display: grid;
+    place-items: center;
+  }
+
+  .qr-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--mauve);
+  }
+  .qr-corner:nth-child(1) {
+    top: 0;
+    left: 0;
+    border-right: none;
+    border-bottom: none;
+  }
+  .qr-corner:nth-child(2) {
+    top: 0;
+    right: 0;
+    border-left: none;
+    border-bottom: none;
+  }
+  .qr-corner:nth-child(3) {
+    bottom: 0;
+    left: 0;
+    border-right: none;
+    border-top: none;
+  }
+  .qr-corner:nth-child(4) {
+    bottom: 0;
+    right: 0;
+    border-left: none;
+    border-top: none;
+  }
+
+  .qr-mid {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--mauve);
+  }
+
+  .pix-text {
+    font-size: 11.5px;
+    color: var(--subtext0);
+    line-height: 1.5;
+  }
+
+  .btn-pricing {
+    margin-top: auto;
+    width: 100%;
+  }
+
+  @media (max-width: 900px) {
+    .tiers {
+      grid-template-columns: 1fr;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+  }
+</style>
