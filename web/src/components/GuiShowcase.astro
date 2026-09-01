@@ -265,4 +265,38 @@ const logLines = [
       grid-template-columns: 1fr;
     }
   }
+
+  @media (max-width: 560px) {
+    .win-body {
+      padding: 16px;
+      gap: 18px;
+    }
+    .win-left {
+      min-width: 0;
+    }
+    .ik {
+      flex-basis: 88px;
+    }
+    .iv {
+      min-width: 0;
+      word-break: break-word;
+    }
+    .buttons {
+      flex-direction: column;
+    }
+    .buttons .b {
+      width: 100%;
+    }
+    .win-title {
+      flex: 1;
+      min-width: 0;
+      margin-left: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .win-bar {
+      padding-right: 10px;
+    }
+  }
 </style>

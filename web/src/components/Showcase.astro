@@ -40,4 +40,11 @@ const showcaseLines = [
   .showcase {
     background: var(--mantle);
   }
+
+  @media (max-width: 560px) {
+    .showcase :global(.terminal) {
+      margin: 0 -14px;
+      border-radius: 10px;
+    }
+  }
 </style>

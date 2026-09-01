@@ -136,4 +136,20 @@ const { title = "vinci-convert", lines = [] } = Astro.props;
     background: linear-gradient(90deg, var(--mauve), var(--lavender));
     transition: width 0.3s ease;
   }
+
+  @media (max-width: 620px) {
+    .tbody {
+      padding: 14px 14px 16px;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    .tbar-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .bar {
+      flex-basis: 100%;
+    }
+  }
 </style>
