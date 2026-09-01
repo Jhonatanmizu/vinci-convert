@@ -1,0 +1,152 @@
+---
+const REPO_URL = "https://github.com/jhonatanmizu/vinci-convert";
+const RELEASES_URL = `${REPO_URL}/releases`;
+const SPONSORS_URL = "https://github.com/sponsors/jhonatanmizu";
+const ISSUES_URL = `${REPO_URL}/issues`;
+const YEAR = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="cols">
+      <div class="brand">
+        <div class="logo">
+          <img src="/vinci-convert/icon.png" alt="" width="28" height="28" />
+          <span>vinci-convert</span>
+        </div>
+        <p>
+          Convert to DaVinci Resolve-ready ProRes with a Catppuccin
+          terminal UI. Free, open, offline.
+        </p>
+        <div class="badges">
+          <span class="badge">GPL-3.0</span>
+          <span class="badge">Linux · Windows</span>
+          <span class="badge">ffmpeg</span>
+        </div>
+      </div>
+
+      <div class="links">
+        <div class="col">
+          <div class="col-h">Project</div>
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#docs">Docs</a>
+          <a href="#download">Download</a>
+        </div>
+        <div class="col">
+          <div class="col-h">Links</div>
+          <a href={REPO_URL}>GitHub</a>
+          <a href={RELEASES_URL}>Releases</a>
+          <a href={SPONSORS_URL}>♥ Sponsors</a>
+          <a href={ISSUES_URL}>Issues</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="base">
+      <span>
+        © {YEAR} jhonatanmizu · Released under GPL-3.0. Ported from
+        davinconv.
+      </span>
+      <span>
+        DaVinci Resolve is a trademark of Blackmagic Design Pty. Ltd.
+      </span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--base);
+    padding: 56px 0 28px;
+  }
+
+  .cols {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 40px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .logo::after {
+    content: "❯";
+    color: var(--mauve);
+    font-weight: 700;
+  }
+
+  .brand p {
+    margin: 14px 0 16px;
+    font-size: 13.5px;
+    color: var(--subtext0);
+    max-width: 380px;
+  }
+
+  .badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    font-size: 11.5px;
+    color: var(--subtext0);
+    border: 1px solid var(--surface1);
+    border-radius: 900px;
+    padding: 4px 11px;
+  }
+
+  .links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .col-h {
+    font-size: 12px;
+    color: var(--overlay0);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .col a {
+    font-size: 14px;
+    color: var(--subtext0);
+  }
+
+  .col a:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .base {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--surface0);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--overlay0);
+  }
+
+  @media (max-width: 760px) {
+    .cols {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -21,6 +21,7 @@ from .converter import (
     ensure_dirs,
     ffmpeg_available,
 )
+from .donate import PIX_KEY, SPONSORS_URL, has_pix
 from .tui import convert_with_progress, export_with_progress
 
 app = typer.Typer(
@@ -39,6 +40,23 @@ def _check_ffmpeg() -> None:
             "and available on your PATH."
         )
         raise typer.Exit(1)
+
+
+def _gratitude() -> None:
+    """The gratitude moment — shown after a successful batch."""
+    theme.console.print()
+    theme.console.print("[dim]──────────────────────────────────────────[/]")
+    theme.console.print("[donate.title]♥ Apoie o projeto · Support the project[/]")
+    theme.console.print(
+        "[donate.dim]vinci-convert is free software. If it just saved you a "
+        "re-encode, a small token of thanks keeps it shipping:[/]"
+    )
+    theme.console.print(f"[donate.link]GitHub Sponsors:[/] {SPONSORS_URL}")
+    if has_pix():
+        theme.console.print(
+            f"[donate.link]PIX (BRL):[/] {PIX_KEY}"
+            " — pay any amount, it takes seconds."
+        )
 
 
 @app.command()
@@ -89,6 +107,8 @@ def convert(
     theme.console.print(
         f"[dim]Output: {converted_dir}[/]"
     )
+    if successes:
+        _gratitude()
 
 
 @app.command()
@@ -115,6 +135,7 @@ def export(
             f"\n[status.success]✓[/] {file.name} → {dst.name}"
         )
         theme.console.print(f"[dim]Output: {exported_dir}[/]")
+        _gratitude()
     else:
         theme.console.print(f"\n[status.error]✕[/] Export failed.")
         raise typer.Exit(1)
@@ -161,6 +182,8 @@ def export_all() -> None:
         f"\n[status.success]Done![/] {successes}/{len(videos)} files exported."
     )
     theme.console.print(f"[dim]Output: {exported_dir}[/]")
+    if successes:
+        _gratitude()
 
 
 @app.command()

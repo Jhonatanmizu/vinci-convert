@@ -208,4 +208,22 @@ QPlainTextEdit#LogPanel {{
     font-size: 12px;
     padding: 8px;
 }}
+
+/* ── Support bar ─────────────────────────────────────────────── */
+QLabel#SupportTip {{
+    color: {SUBTEXT0};
+    font-size: 12px;
+    background: transparent;
+}}
+QPushButton#SupportBtn {{
+    background-color: {SURFACE0};
+    border: 1px solid {SURFACE1};
+    border-radius: 8px;
+    padding: 8px 18px;
+    color: {LAVENDER};
+    font-weight: 600;
+}}
+QPushButton#SupportBtn:hover {{
+    background-color: {SURFACE1};
+}}
 """

@@ -1,0 +1,43 @@
+---
+import Terminal from "./Terminal.astro";
+
+const showcaseLines = [
+  { prompt: "❯ ", text: "vinci-convert convert ./clips/ — recursive", label: "" },
+  { text: "Scanning clips/ … 4 files found", kind: "dim" },
+  { text: "ffprobe: scene_01.mp4 · yuv420p · 29.97 fps", kind: "dim" },
+  { text: "ffprobe: scene_02.mov · yuva444p10le · 24 fps", kind: "dim" },
+  { bar: true, pct: 100, prompt: "❯ ", text: "scene_01.mp4 → ProRes HQ (422)" },
+  { text: "✓ scene_01.mp4 → converted/scene_01.mov", kind: "success" },
+  { bar: true, pct: 64, prompt: "❯ ", text: "scene_02.mov · alpha → ProRes 4444" },
+  { text: "✓ scene_02.mov → converted/scene_02.mov", kind: "success" },
+  { bar: true, pct: 100, prompt: "❯ ", text: "scene_03.mp4 → stream copy (no re-encode)" },
+  { text: "✓ scene_03.mp4 → converted/scene_03.mov", kind: "success" },
+  { text: "Done! 4/4 files converted. Output: ~/Videos/vinci-convert/converted", kind: "success" },
+  { text: "────────────────────────────────────", kind: "dim" },
+  { text: "♥ Apoie o projeto · Support the project", kind: "accent" },
+  { text: "GitHub Sponsors: https://github.com/sponsors/jhonatanmizu", kind: "dim" },
+];
+---
+
+<section class="section showcase">
+  <div class="container">
+    <div class="section-head section-head--center">
+      <div class="eyebrow">// the tui</div>
+      <h2 class="section-title">One command. The whole folder.</h2>
+      <p class="section-sub">
+        Watch it probe, pick its profile, and chew through the batch —
+        every clip lands as a DaVinci-ready .mov, then says thanks.
+      </p>
+    </div>
+    <Terminal
+      title="vinci-convert — batch convert in progress"
+      lines={showcaseLines}
+    />
+  </div>
+</section>
+
+<style>
+  .showcase {
+    background: var(--mantle);
+  }
+</style>

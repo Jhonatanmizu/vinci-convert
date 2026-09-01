@@ -1,0 +1,88 @@
+---
+const RELEASES_URL = "https://github.com/jhonatanmizu/vinci-convert/releases";
+const REPO_URL = "https://github.com/jhonatanmizu/vinci-convert";
+const SPONSORS_URL = "https://github.com/sponsors/jhonatanmizu";
+---
+
+<section class="section cta" id="download">
+  <div class="container cta-inner">
+    <h2>Stop re-encoding.<br />Start cutting.</h2>
+    <p class="cta-sub">
+      Free forever. If it just saved you a re-encode, a small thanks keeps
+      it shipping.
+    </p>
+    <div class="cta-buttons">
+      <a class="btn btn-primary" href={RELEASES_URL}>Download for Linux / Windows</a>
+      <a class="btn btn-outline" href="#docs">Read the Docs</a>
+      <a class="btn btn-outline" href={SPONSORS_URL}>♥ Sponsor</a>
+    </div>
+    <p class="cta-note">ffmpeg required · AppImage + setup.exe · no account needed</p>
+  </div>
+</section>
+
+<section class="banner">
+  <div class="container">
+    GPL-3.0 · Open source · No telemetry · No lock-in · Built on
+    ffmpeg — funded by its users
+  </div>
+</section>
+
+<style>
+  .cta {
+    background: radial-gradient(
+        600px 300px at 50% 0%,
+        color-mix(in srgb, var(--mauve) 14%, transparent),
+        transparent
+      ),
+      var(--mantle);
+    border-top: 1px solid var(--surface0);
+    text-align: center;
+  }
+
+  .cta-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta h2 {
+    font-size: 40px;
+  }
+
+  .cta-sub {
+    margin-top: 18px;
+    max-width: 520px;
+    color: var(--subtext0);
+    font-size: 16px;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .cta-note {
+    margin-top: 22px;
+    font-size: 12.5px;
+    color: var(--overlay0);
+  }
+
+  .banner {
+    background: var(--crust);
+    border-top: 1px solid var(--surface0);
+    border-bottom: 1px solid var(--surface0);
+    padding: 22px 0;
+    text-align: center;
+    font-size: 13px;
+    color: var(--subtext0);
+  }
+
+  @media (max-width: 860px) {
+    .cta h2 {
+      font-size: 31px;
+    }
+  }
+</style>
