@@ -218,4 +218,20 @@ vinci-convert/
 
 ## License
 
-GPL-3.0 — same as the original [davinconv](https://github.com/gohny/davinconv).
+**GPL-3.0** — see [`LICENSE`](LICENSE).
+
+> **Derivative work notice:** `src/vinci_convert/converter.py` is ported from
+> [davinconv](https://github.com/gohny/davinconv) by Gohny (GPL-3.0, originally a
+> bash script). The conversion logic in that file is a modified version of that
+> work and remains under GPL-3.0.
+
+## Supporting the project
+
+Vinci Convert is free and always will be, but it runs on appreciations.
+Consider supporting it — donations help cover packaging, releases, and
+development time:
+
+- **PIX (Brazil):** QR code linked in-app after a successful batch — key TBD (Phase 1)
+- **GitHub Sponsors:** <https://github.com/sponsors/jhonatanmizu>
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the CLA and trademark policy.
